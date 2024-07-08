@@ -54,13 +54,18 @@ public class Principal {
                     System.out.println("Libro no encontrado");
                 }
 
+                muestraElMenu();
+
                 break;
 
             case 2:
 
-            break;
+                muestraElMenu();
+
+                break;
 
             case 3:
+                muestraElMenu();
 
             break;
 
@@ -81,6 +86,8 @@ public class Principal {
                 } else {
                     System.out.println("No se encontraron libros para el año especificado.");
                 }
+                muestraElMenu();
+
                 break;
 
 
@@ -106,6 +113,8 @@ public class Principal {
                 } else {
                     System.out.println("No se encontraron libros en este idioma");
                 }
+
+                muestraElMenu();
 
                 break;
 
