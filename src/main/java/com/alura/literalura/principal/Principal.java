@@ -110,7 +110,8 @@ public class Principal {
                 break;
 
             case 0:
-
+                System.out.println("Hasta luego! Gracias por usar la aplicación");
+                System.exit(0);
             break;
         }
     }
