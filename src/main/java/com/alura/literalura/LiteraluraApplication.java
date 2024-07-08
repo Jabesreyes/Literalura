@@ -1,6 +1,6 @@
 package com.alura.literalura;
 
-import com.alura.literalura.service.ConsumoAPI;
+import com.alura.literalura.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,8 +14,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var consumoApi = new ConsumoAPI();
-		var json = consumoApi.obtenerDatos("https://gutendex.com/books");
-		System.out.println(json);
+		Principal main = new Principal();
+		main.muestraElMenu();
 	}
 }
