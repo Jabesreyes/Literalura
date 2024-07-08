@@ -1,7 +1,7 @@
 package com.alura.literalura.principal;
 
-import com.alura.literalura.model.Datos;
-import com.alura.literalura.model.DatosLibros;
+import com.alura.literalura.dto.Datos;
+import com.alura.literalura.dto.DatosLibro;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +43,7 @@ public class Principal {
 
                 var json1 = consumoAPI.obtenerDatos(URL_BASE+"?search="+tituloLibro.replace(" ","%20"));
                 var datosBusqueda = conversor.obtenerDatos(json1, Datos.class);
-                Optional<DatosLibros> libroBuscado = datosBusqueda.resultados().stream()
+                Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
                         .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
                         .findFirst();
 
@@ -76,7 +76,7 @@ public class Principal {
                 var json2 = consumoAPI.obtenerDatos(URL_BASE + "?author_year_start=" + año);
 
                 var datosBusqueda2 = conversor.obtenerDatos(json2, Datos.class);
-                List<DatosLibros> librosEncontrados = datosBusqueda2.resultados();
+                List<DatosLibro> librosEncontrados = datosBusqueda2.resultados();
 
                 if (!librosEncontrados.isEmpty()) {
                     System.out.println("Libros encontrados:");
@@ -103,7 +103,7 @@ public class Principal {
                 var json3 = consumoAPI.obtenerDatos(URL_BASE + "?languages=" + idioma);
 
                 var datosBusqueda3 = conversor.obtenerDatos(json3, Datos.class);
-                List<DatosLibros> librosIdiomas = datosBusqueda3.resultados();
+                List<DatosLibro> librosIdiomas = datosBusqueda3.resultados();
 
                 if (!librosIdiomas.isEmpty()) {
                     System.out.println("Libros encontrados:");

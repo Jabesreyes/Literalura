@@ -1,4 +1,4 @@
-package com.alura.literalura.model;
+package com.alura.literalura.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public record DatosAutor(
         @JsonAlias("name") String nombre,
-        @JsonAlias("birth_year") String fechaDeNacimiento
+        @JsonAlias("birth_year") String añoDeNacimiento,
+        @JsonAlias("death_year") String añoDeFallecimiento
 ) {
 }
