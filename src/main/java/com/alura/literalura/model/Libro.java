@@ -1,11 +1,12 @@
 package com.alura.literalura.model;
 
+import com.alura.literalura.dto.DatosLibro;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "libros")
+@Table(name = "libro")
 
 public class Libro {
     @Id
@@ -14,22 +15,27 @@ public class Libro {
 
     private String titulo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Autor> autores;
 
-    @ElementCollection
-    private List<String> idiomas;
+    private String idiomas;
 
     private Double descargas;
 
     public Libro() {
     }
 
-    public Libro(String titulo, List<Autor> autores, List<String> idiomas, Double descargas) {
+    public Libro(String titulo, List<Autor> autores, String idiomas, Double descargas) {
         this.titulo = titulo;
         this.autores = autores;
         this.idiomas = idiomas;
         this.descargas = descargas;
+    }
+
+    public Libro(DatosLibro datosLibro) {
+        this.titulo = datosLibro.titulo();
+        this.descargas = datosLibro.numeroDeDescargas();
+        this.idiomas = datosLibro.idiomas().toString();
     }
 
     public Long getId() {
@@ -56,11 +62,11 @@ public class Libro {
         this.autores = autores;
     }
 
-    public List<String> getIdiomas() {
+    public String getIdiomas() {
         return idiomas;
     }
 
-    public void setIdiomas(List<String> idiomas) {
+    public void setIdiomas(String idiomas) {
         this.idiomas = idiomas;
     }
 

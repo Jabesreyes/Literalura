@@ -1,11 +1,16 @@
 package com.alura.literalura.principal;
 
 import com.alura.literalura.dto.Datos;
+import com.alura.literalura.dto.DatosAutor;
 import com.alura.literalura.dto.DatosLibro;
+import com.alura.literalura.model.Autor;
+import com.alura.literalura.model.Libro;
+import com.alura.literalura.repository.AutorRepository;
+import com.alura.literalura.repository.LibroRepository;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +22,14 @@ public class Principal {
     private ConsumoAPI consumoAPI = new ConsumoAPI();
     private ConvierteDatos conversor = new ConvierteDatos();
     private Scanner teclado = new Scanner(System.in);
+
+    private LibroRepository repositorio;
+    private AutorRepository autorRepository;
+
+    public Principal(LibroRepository repository, AutorRepository repositoryAutor) {
+        this.repositorio = repository;
+        this.autorRepository = repositoryAutor;
+    }
 
     public void muestraElMenu() {
 
@@ -48,6 +61,17 @@ public class Principal {
                 if (libroBuscado.isPresent()) {
                     System.out.println("Libro buscado encontrado");
                     System.out.println(libroBuscado.get());
+
+                    DatosLibro datosLibro = libroBuscado.get();
+                    Libro libro = new Libro(datosLibro);
+                    repositorio.save(libro);
+
+                    DatosAutor datosAutor = libroBuscado.get().autores().get(0); // Supongo que solo hay un autor en la lista
+                    Autor autor = new Autor(datosAutor.nombre(), datosAutor.añoDeNacimiento(), datosAutor.añoDeFallecimiento());
+                    autorRepository.save(autor); // Guarda el autor en la base de datos
+
+
+
                 }else {
                     System.out.println("Libro no encontrado");
                 }
@@ -57,12 +81,39 @@ public class Principal {
                 break;
 
             case 2:
+                List<Libro> librosRegistrados = repositorio.findAll();
+
+                if (librosRegistrados.isEmpty()) {
+                    System.out.println("No hay libros registrados.");
+                } else {
+                    System.out.println("Libros registrados:");
+                    for (Libro libro : librosRegistrados) {
+                        System.out.println("--------- Libro ---------");
+                        System.out.println("Título: " + libro.getTitulo());
+                        System.out.println("Idiomas: " + libro.getIdiomas());
+                        System.out.println("Descargas: " + libro.getDescargas());
+                        System.out.println("--------------------------");
+                    }
+                }
 
                 muestraElMenu();
 
                 break;
 
             case 3:
+                List<Autor> autoresRegistrados = autorRepository.findAll();
+
+                if (autoresRegistrados.isEmpty()) {
+                    System.out.println("No hay autores registrados.");
+                } else {
+                    System.out.println("Autores registrados:");
+                    for (Autor autor : autoresRegistrados) {
+                        System.out.println("Nombre: " + autor.getNombre());
+                        System.out.println("Año de nacimiento: " + autor.getAñoDeNacimiento());
+                        System.out.println("Año de fallecimiento: " + autor.getAñoDeFallecimiento());
+                        System.out.println("-------------------------");
+                    }
+                }
                 muestraElMenu();
 
             break;
@@ -79,7 +130,12 @@ public class Principal {
                 if (!librosEncontrados.isEmpty()) {
                     System.out.println("Libros encontrados:");
                     for (int i = 0; i < Math.min(3, librosEncontrados.size()); i++) {
-                        System.out.println(librosEncontrados.get(i));
+                        System.out.println("Libro " + (i + 1) + ":");
+                        System.out.println("Título: " + librosEncontrados.get(i).titulo());
+                        System.out.println("Autores: " + librosEncontrados.get(i).autores());
+                        System.out.println("Idiomas: " + librosEncontrados.get(i).idiomas());
+                        System.out.println("Descargas: " + librosEncontrados.get(i).numeroDeDescargas());
+                        System.out.println("-------------------------");
                     }
                 } else {
                     System.out.println("No se encontraron libros para el año especificado.");
@@ -106,12 +162,16 @@ public class Principal {
                 if (!librosIdiomas.isEmpty()) {
                     System.out.println("Libros encontrados:");
                     for (int i = 0; i < Math.min(3, librosIdiomas.size()); i++) {
-                        System.out.println(librosIdiomas.get(i));
+                        System.out.println("Libro " + (i + 1) + ":");
+                        System.out.println("Título: " + librosIdiomas.get(i).titulo());
+                        System.out.println("Autores: " + librosIdiomas.get(i).autores());
+                        System.out.println("Idiomas: " + librosIdiomas.get(i).idiomas());
+                        System.out.println("Descargas: " + librosIdiomas.get(i).numeroDeDescargas());
+                        System.out.println("-------------------------");
                     }
                 } else {
-                    System.out.println("No se encontraron libros en este idioma");
+                    System.out.println("No se encontraron libros en este idioma.");
                 }
-
                 muestraElMenu();
 
                 break;
