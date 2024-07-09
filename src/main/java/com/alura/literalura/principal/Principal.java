@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
-
 public class Principal {
 
     private static final String URL_BASE = "https://gutendex.com/books";
